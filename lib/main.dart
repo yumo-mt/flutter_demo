@@ -37,21 +37,25 @@ class MyApp extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 8),
-                    Text(
-                      'Kandersteg, Switzerland',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey[700],
-                      ),
-                    ),
-                    SizedBox(height: 8),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(Icons.star, color: Colors.red),
-                        SizedBox(width: 4),
                         Text(
-                          '41',
-                          style: TextStyle(fontSize: 16),
+                          'Kandersteg, Switzerland',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey[700],
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Icon(Icons.star, color: Colors.red),
+                            SizedBox(width: 4),
+                            Text(
+                              '41',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
                         ),
                       ],
                     ),

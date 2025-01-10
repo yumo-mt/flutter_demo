@@ -4,55 +4,75 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  int _counter = 41;
+
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Oeschinen Lake Campground'),
+          title: Text('这里是title'),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _incrementCounter,
+          child: Icon(Icons.add),
         ),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // 图片部分
               Image.network(
-                'https://img.manster.me/wp-content/uploads/2023/06/从aigc下载的图片.png', // 示例图片 URL
+                'https://img.manster.me/wp-content/uploads/2023/06/从aigc下载的图片.png',
                 height: 200,
                 fit: BoxFit.cover,
               ),
-              // 标题部分
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Oeschinen Lake Campground',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'Kandersteg, Switzerland',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey[700],
-                          ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Oeschinen Lake Campground',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              'Kandersteg, Switzerland',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey[700],
+                              ),
+                            ),
+                          ],
                         ),
                         Row(
                           children: [
                             Icon(Icons.star, color: Colors.red),
                             SizedBox(width: 4),
                             Text(
-                              '41',
+                              '$_counter',
                               style: TextStyle(fontSize: 16),
                             ),
                           ],
@@ -62,7 +82,6 @@ class MyApp extends StatelessWidget {
                   ],
                 ),
               ),
-              // 按钮部分
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
@@ -93,7 +112,6 @@ class MyApp extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 16),
-              // 描述部分
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
@@ -109,7 +127,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// 自定义带图标的按钮小部件
 class IconButtonWithLabel extends StatelessWidget {
   final IconData icon;
   final String label;

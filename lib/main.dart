@@ -1,156 +1,199 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
-  _MyAppState createState() => _MyAppState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: const MainScreen(),
+    );
+  }
 }
 
-class _MyAppState extends State<MyApp> {
-  int _counter = 41;
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
-  void _incrementCounter() {
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = [
+    const HomePage(),
+    const CategoryPage(),
+    const ProfilePage(),
+  ];
+
+  void _onItemTapped(int index) {
     setState(() {
-      _counter++;
+      _selectedIndex = index;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('这里是title'),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _incrementCounter,
-          child: Icon(Icons.add),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Image.network(
-                'https://img.manster.me/wp-content/uploads/2023/06/从aigc下载的图片.png',
-                height: 200,
-                fit: BoxFit.cover,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Oeschinen Lake Campground',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              'Kandersteg, Switzerland',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey[700],
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Icon(Icons.star, color: Colors.red),
-                            SizedBox(width: 4),
-                            Text(
-                              '$_counter',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    IconButtonWithLabel(
-                      icon: Icons.call,
-                      label: 'CALL',
-                      onPressed: () {
-                        print('Call button pressed');
-                      },
-                    ),
-                    IconButtonWithLabel(
-                      icon: Icons.near_me,
-                      label: 'ROUTE',
-                      onPressed: () {
-                        print('Route button pressed');
-                      },
-                    ),
-                    IconButtonWithLabel(
-                      icon: Icons.share,
-                      label: 'SHARE',
-                      onPressed: () {
-                        print('Share button pressed');
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situated 1,578 meters above sea level, it is one of the larger Alpine Lakes. A gondola ride from Kandersteg, followed by a half-hour walk through pastures and pine forest, leads you to the lake, which warms to 20 degrees Celsius in the summer. Activities enjoyed here include rowing, and riding the summer toboggan run.',
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-            ],
+    return Scaffold(
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: '主页',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.category),
+            label: '类别',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: '配置',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Home Page'),
+      ),
+      body: const Center(
+        child: Text('This is the Home Page'),
+      ),
+    );
+  }
+}
+
+class CategoryPage extends StatelessWidget {
+  const CategoryPage({super.key});
+
+  void _showDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('提示'),
+          content: const Text('你点击了按钮'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('确定'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Category Page'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('这里是Category页面'),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => _showDialog(context),
+              child: const Text('显示对话框'),
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-class IconButtonWithLabel extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final VoidCallback onPressed;
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
 
-  IconButtonWithLabel({
-    required this.icon,
-    required this.label,
-    required this.onPressed,
-  });
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  String _apiResponse = '';
+  bool _isLoading = false;
+
+  Future<void> _fetchData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final dio = Dio();
+      final response = await dio.get('http://api.manster.me/p1');
+
+      if (response.statusCode == 200) {
+        setState(() {
+          _apiResponse = response.data['text'];
+        });
+      } else {
+        setState(() {
+          _apiResponse = '请求失败: ${response.statusCode}';
+        });
+      }
+    } on DioException catch (e) {
+      setState(() {
+        _apiResponse = '请求出错: ${e.message}';
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        IconButton(
-          icon: Icon(icon, color: Colors.blue),
-          onPressed: onPressed,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Profile Page'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('这里是Profile页面'),
+            const SizedBox(height: 20),
+            _isLoading
+                ? const CircularProgressIndicator()
+                : Text(_apiResponse),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _fetchData,
+              child: const Text('获取数据'),
+            ),
+          ],
         ),
-        Text(
-          label,
-          style: TextStyle(color: Colors.blue),
-        ),
-      ],
+      ),
     );
   }
 }

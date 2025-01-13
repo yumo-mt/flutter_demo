@@ -1,43 +1,58 @@
 import 'package:flutter/material.dart';
 
-class CategoryPage extends StatelessWidget {
-  const CategoryPage({super.key});
+class CategoryPage extends StatefulWidget {
+  const CategoryPage({super.key}); 
 
-  void _showDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('提示'),
-          content: const Text('你点击了按钮'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('确定'),
-            ),
-          ],
-        );
-      },
-    );
+  @override
+  _CounterPageState createState() => _CounterPageState();
+}
+
+class _CounterPageState extends State<CategoryPage> {
+  int _counter = 3;
+
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  void _decrementCounter() {
+    setState(() {
+      if (_counter > 0) {
+        _counter--;
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Category Page'),
+        title: Text('getX Page'),
+      ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          FloatingActionButton(
+            onPressed: _incrementCounter,
+            tooltip: 'Increment',
+            child: Icon(Icons.add),
+          ),
+          SizedBox(height: 20),
+          FloatingActionButton(
+            onPressed: _decrementCounter,
+            tooltip: 'Decrement',
+            child: Icon(Icons.remove),
+          ),
+        ],
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('这里是Category页面'),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => _showDialog(context),
-              child: const Text('显示对话框'),
+          children: <Widget>[
+            Text(
+              '$_counter',
+              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
             ),
           ],
         ),
